@@ -83,6 +83,38 @@ button[type="submit"]:hover {
     background-color: #ffbe77; 
 }
 
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+option[value=""] {
+    font-style:italic;
+    color:#ffd42f;
+}
+
+a{
+    width: 100%; 
+    padding: 10px; 
+    background-color: #ffd42f; 
+    color: white; 
+    border: none; 
+    cursor: pointer; 
+    align-items: center;
+}
+
+a:hover{
+    background-color: #ffbe77;
+}
 </style>
 
 @section ('contenido')
@@ -90,6 +122,7 @@ button[type="submit"]:hover {
 @csrf
 <button type="submit">Logout</button>
 </form>
+<a href="{{route('cart')}}">Ver carrito de compras</a>
 <h1>
     Bienvenido(a)
 </h1>
@@ -101,6 +134,7 @@ button[type="submit"]:hover {
     <th>Description</th>
     <th>Size</th>
     <th>Price</th>
+    <th>Category</th>
     <th>Actions</th>
   </tr>
     <tbody>
@@ -110,24 +144,44 @@ button[type="submit"]:hover {
                 <td>{{ $product->description }}</td>
                 <td>{{ $product->size }}</td>
                 <td>{{ $product->price }}</td>
+                <td>{{ isset($product->category) ? $product->category->name : 'Sin categoría'}}</td>
                 <td>
                 <a href="{{route('product.edit',$product->id)}}" style="color:white;font-weight:bold;text-decoration: none; padding:10px; background-color:green;border:solid 1px rgb(154, 241, 73);">Editar</a>
                 <a href="{{route('product.delete',$product->id)}}" style="color:white;font-weight:bold;text-decoration: none; padding:10px; background-color:red;border:solid 1px rgb(241, 65, 94);">Eliminar</a>
-                </td>
+                <form action="{{route('car.create')}}" method="post">
+                @csrf
+                <input type="hidden" name="product_id" value="{{$product->id}}">
+                <label for="">Cantidad del producto</label>
+                <input type="number" name="cantidad" id="">
+                <button type="submit">Agregar productos</button>
+                </form>
+            </td>
             </tr>
         @endforeach
     </tbody>
 </table>
 <br></br>
 <h3>Categorías disponibles</h3>
-<ul>
-    @foreach ( $categories as $category)
-    <li>{{$category->name}}</li>
-    <br></br>
-    <a href="{{route('category.edit',$category->id)}}" style="color:white;font-weight:bold;text-decoration: none; padding:10px; background-color:green;border:solid 1px rgb(154, 241, 73);">Editar</a>
-    <a href="{{route('category.delete',$category->id)}}" style="color:white;font-weight:bold;text-decoration: none; padding:10px; background-color:red;border:solid 1px rgb(241, 65, 94);">Eliminar</a>
-    @endforeach
-</ul>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Categoría</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($categories as $category)
+        <tr>
+            <td>{{$category->name}}</td>
+            <td>
+                <a href="{{route('category.edit',$category->id)}}" style="color:white;font-weight:bold;text-decoration:none;padding:10px;background-color:green;border:solid 1px rgb(154, 241, 73);">Editar</a>
+                <a href="{{route('category.delete',$category->id)}}" style="color:white;font-weight:bold;text-decoration:none;padding:10px;background-color:red;border:solid 1px rgb(241, 65, 94);">Eliminar</a>
+                <a href="{{route('category.productos',$category->id)}}" style="color:white;font-weight:bold;text-decoration:none;padding:10px;background-color:blue;border:solid 1px rgb(65, 135, 241);">Ver productos</a>
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
 <br><br>
 <h3 >Creación de producto</h3>
     <form action="{{route('product.create')}}" method="post">
@@ -140,6 +194,14 @@ button[type="submit"]:hover {
         <input type="text" name="size">
         <label for="">Precio unitario</label>
         <input type="number" name="price" id="">
+        <label for="">Categoria</label>
+        <select name="category_id" id="category_id">
+        <option value="">Seleccionar categoria</option>
+        @foreach ( $categories as $category)
+        <option value="{{$category->id}}">{{$category->name}}</option>
+            @endforeach
+        </select>
+        <br></br>
         <button type="submit">Crear</button>
       </form>
     <h3 >Creación de categorias</h3>

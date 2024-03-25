@@ -50,8 +50,40 @@ button[type="submit"] {
 button[type="submit"]:hover {
     background-color: #ffbe77; 
 }
-</style>
 
+a{
+    width: 30%; 
+    padding: 5px; 
+    background-color: #ffd42f; 
+    color: white; 
+    border: none; 
+    cursor: pointer; 
+}
+
+a:hover{
+    background-color: #ffbe77;  
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+option[value=""] {
+    font-style:italic;
+    color:#ffd42f;
+}
+</style>
+<a href="{{route('inicio')}}">Regresar</a>
 <h3 >Edición de producto</h3>
     <form action="{{route('product.update',$product->id)}}" method="post">
         @csrf
@@ -63,5 +95,14 @@ button[type="submit"]:hover {
         <input type="text" name="size" value="{{$product->size}}">
         <label for="">Precio unitario</label>
         <input type="number" name="price" id="" value="{{$product->price}}">
+        <select name="category_id" id="category_id">
+        <option value="">Seleccionar categoria</option>
+        @foreach ($categories as $category)
+        <option value="{{ $category->id }}" {{ $product->category_id == $category->id ? 'selected' : '' }}>
+            {{ $category->name }}
+        </option>
+        @endforeach
+        </select>
+        <br></br>
         <button type="submit">Crear</button>
     </form>

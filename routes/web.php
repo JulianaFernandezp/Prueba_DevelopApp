@@ -4,7 +4,7 @@ use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
-
+use App\Http\Controllers\CarController;
 
 Route:: get('/', function(){
     return view('Login.login');
@@ -26,4 +26,13 @@ Route::post('/category/create',[CategoryController::class, 'create'])->name('cat
 Route::get('/category/edit/{id}',[CategoryController::class, 'edit'])->name('category.edit');
 Route::get('/category/delete/{id}',[CategoryController::class, 'destroy'])->name('category.delete');
 Route::post('/category/update/{id}',[CategoryController::class, 'update'])->name('category.update');
+Route::get('/category/productos/{id}',[CategoryController::class, 'index'])->name('category.productos');
+
+Route::post('/car/create',[CarController::class, 'create'])->name('car.create');
+Route::get('cart', [CarController::class, 'index'])->name('cart');
+Route::post('/car/update/{id}',[CarController::class, 'update'])->name('car.update');
+Route::get('/car/productos/{id}',[CarController::class, 'destroy'])->name('car.delete');
+
+
+
 

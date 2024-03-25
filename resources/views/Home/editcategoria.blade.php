@@ -50,8 +50,21 @@ button[type="submit"] {
 button[type="submit"]:hover {
     background-color: #ffbe77; 
 }
-</style>
 
+a{
+    width: 30%; 
+    padding: 5px; 
+    background-color: #ffd42f; 
+    color: white; 
+    border: none; 
+    cursor: pointer; 
+}
+
+a:hover{
+    background-color: #ffbe77;  
+}
+</style>
+<a href="{{route('inicio')}}">Regresar</a>
 <h3 >Edición de categoria</h3>
     <form action="{{route('category.update',$category->id)}}" method="post">
         @csrf

@@ -4,14 +4,25 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Product;
 
 class CategoryController extends Controller
 {
    private $category;
+   private $product;
    
    public function __construct(){
     $this->category= new Category();
+    $this->product= new Product();
+
+
    }
+
+   public function index($id){
+    $product= $this-> product->where('category_id', $id)->get();
+    $categories= $this-> category->get();
+    return view('Home.productos', compact('product', 'categories'));
+}
 
    public function create(Request $request){
     $this->category->create($request->all());
@@ -40,4 +51,5 @@ public function destroy($id)
     if($category->delete());
     return redirect(route('inicio'));
 }
+
 }

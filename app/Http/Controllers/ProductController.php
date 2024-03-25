@@ -30,8 +30,9 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = $this->product->findOrFail($id);
+        $categories= $this-> category->get();
 
-        if($product) return view('Home.edit', compact('product'));
+        if($product) return view('Home.edit', compact('product', 'categories'));
 
         return redirect(route('inicio'));
     }
