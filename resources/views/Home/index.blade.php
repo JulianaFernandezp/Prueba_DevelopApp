@@ -101,7 +101,7 @@ button[type="submit"]:hover {
     <th>Description</th>
     <th>Size</th>
     <th>Price</th>
-    <th>Iva</th>
+    <th>Actions</th>
   </tr>
     <tbody>
         @foreach($product as $product)
@@ -110,11 +110,24 @@ button[type="submit"]:hover {
                 <td>{{ $product->description }}</td>
                 <td>{{ $product->size }}</td>
                 <td>{{ $product->price }}</td>
-                <td>{{ $product->iva }}</td>
+                <td>
+                <a href="{{route('product.edit',$product->id)}}" style="color:white;font-weight:bold;text-decoration: none; padding:10px; background-color:green;border:solid 1px rgb(154, 241, 73);">Editar</a>
+                <a href="{{route('product.delete',$product->id)}}" style="color:white;font-weight:bold;text-decoration: none; padding:10px; background-color:red;border:solid 1px rgb(241, 65, 94);">Eliminar</a>
+                </td>
             </tr>
         @endforeach
     </tbody>
 </table>
+<br></br>
+<h3>Categorías disponibles</h3>
+<ul>
+    @foreach ( $categories as $category)
+    <li>{{$category->name}}</li>
+    <br></br>
+    <a href="{{route('category.edit',$category->id)}}" style="color:white;font-weight:bold;text-decoration: none; padding:10px; background-color:green;border:solid 1px rgb(154, 241, 73);">Editar</a>
+    <a href="{{route('category.delete',$category->id)}}" style="color:white;font-weight:bold;text-decoration: none; padding:10px; background-color:red;border:solid 1px rgb(241, 65, 94);">Eliminar</a>
+    @endforeach
+</ul>
 <br><br>
 <h3 >Creación de producto</h3>
     <form action="{{route('product.create')}}" method="post">
@@ -129,4 +142,11 @@ button[type="submit"]:hover {
         <input type="number" name="price" id="">
         <button type="submit">Crear</button>
       </form>
+    <h3 >Creación de categorias</h3>
+    <form action="{{route('category.create')}}" method="post">
+    @csrf
+    <label for="categoria">Categorias productos</label>
+    <input type="text" name="name">
+    <button type="submit">Crear</button>
+    </form>
 @endsection

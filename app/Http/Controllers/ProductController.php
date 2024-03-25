@@ -4,18 +4,22 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Category;
 
 class ProductController extends Controller
 {
     private $product;
+    private $category;
 
     public function __construct(){
         $this->product = new product();
+        $this->category = new Category();
     }
 
     public function index(){
         $product= $this-> product->get();
-        return view('Home.index', compact('product'));
+        $categories= $this-> category->get();
+        return view('Home.index', compact('product', 'categories'));
     }
 
     public function create(Request $request){
@@ -23,23 +27,26 @@ class ProductController extends Controller
         return redirect(route('inicio'));
     }
 
-    /*public function edit($id)
+    public function edit($id)
     {
         $product = $this->product->findOrFail($id);
-        return view('products.edit', compact('product'));
+
+        if($product) return view('Home.edit', compact('product'));
+
+        return redirect(route('inicio'));
     }
 
     public function update(Request $request, $id)
     {
         $product = $this->product->findOrFail($id);
-        $product->update($request->all());
+        if($product) $product->update($request->all());
         return redirect(route('inicio'));
     }
 
     public function destroy($id)
     {
         $product = $this->product->findOrFail($id);
-        $product->delete();
+        if($product->delete());
         return redirect(route('inicio'));
-    }*/
+    }
 }
